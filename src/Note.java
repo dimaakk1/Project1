@@ -15,8 +15,16 @@ public class Note {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public String getContent() {
         return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -25,10 +33,8 @@ public class Note {
 
     @Override
     public String toString() {
-        return "Note{" +
-                "title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createdAt=" + createdAt +
-                '}';
+        return "Заголовок: " + title + "\n" +
+                "Вміст: " + content + "\n" +
+                "Дата створення: " + createdAt + "\n";
     }
 }
