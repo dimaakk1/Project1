@@ -1,12 +1,12 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Comparator;
 
 public class NoteManager {
     private List<Note> notes = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
 
-    // Створення нотатки
     public void createNote() {
         System.out.print("Введіть заголовок: ");
         String title = scanner.nextLine();
@@ -16,7 +16,6 @@ public class NoteManager {
         System.out.println("Нотатка створена!");
     }
 
-    // Читання всіх нотаток
     public void readNotes() {
         if (notes.isEmpty()) {
             System.out.println("Немає нотаток.");
@@ -28,7 +27,6 @@ public class NoteManager {
         }
     }
 
-    // Оновлення нотатки
     public void updateNote() {
         readNotes();
         if (notes.isEmpty()) return;
@@ -50,7 +48,6 @@ public class NoteManager {
         }
     }
 
-    // Видалення нотатки
     public void deleteNote() {
         readNotes();
         if (notes.isEmpty()) return;
@@ -65,6 +62,33 @@ public class NoteManager {
         } else {
             System.out.println("Некоректний ID.");
         }
+    }
+
+    public void sortNotes() {
+        if (notes.isEmpty()) {
+            System.out.println("Немає нотаток для сортування.");
+            return;
+        }
+
+        System.out.println("Оберіть спосіб сортування:");
+        System.out.println("1. За заголовком (A-Z)");
+        System.out.println("2. За датою створення (від нових до старих)");
+        System.out.print("Введіть варіант: ");
+
+        int option = scanner.nextInt();
+        scanner.nextLine(); // очищення буфера
+
+        switch (option) {
+            case 1 -> notes.sort(Comparator.comparing(Note::getTitle));
+            case 2 -> notes.sort(Comparator.comparing(Note::getCreatedAt).reversed());
+            default -> {
+                System.out.println("Некоректний вибір!");
+                return;
+            }
+        }
+
+        System.out.println("Нотатки після сортування:");
+        readNotes();
     }
 }
 

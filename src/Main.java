@@ -12,6 +12,7 @@ public class Main {
             System.out.println("2. Переглянути нотатки");
             System.out.println("3. Оновити нотатку");
             System.out.println("4. Видалити нотатку");
+            System.out.println("5. Сортувати нотатки");
             System.out.println("0. Вихід");
 
             System.out.print("Оберіть опцію: ");
@@ -23,6 +24,7 @@ public class Main {
                 case 2 -> manager.readNotes();
                 case 3 -> manager.updateNote();
                 case 4 -> manager.deleteNote();
+                case 5 -> manager.sortNotes();
                 case 0 -> {
                     System.out.println("Вихід з програми...");
                     running = false;
