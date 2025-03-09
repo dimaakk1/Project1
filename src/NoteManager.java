@@ -2,10 +2,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Comparator;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class NoteManager {
     private List<Note> notes = new ArrayList<>();
     private Scanner scanner = new Scanner(System.in);
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public void createNote() {
         System.out.print("Введіть заголовок: ");
@@ -76,7 +80,7 @@ public class NoteManager {
         System.out.print("Введіть варіант: ");
 
         int option = scanner.nextInt();
-        scanner.nextLine(); // очищення буфера
+        scanner.nextLine();
 
         switch (option) {
             case 1 -> notes.sort(Comparator.comparing(Note::getTitle));
@@ -89,6 +93,56 @@ public class NoteManager {
 
         System.out.println("Нотатки після сортування:");
         readNotes();
+    }
+
+    public void searchNotes() {
+        if (notes.isEmpty()) {
+            System.out.println("Немає нотаток для пошуку.");
+            return;
+        }
+
+        System.out.println("Оберіть критерій пошуку:");
+        System.out.println("1. За заголовком");
+        System.out.println("2. За датою створення (формат: yyyy-MM-dd HH:mm)");
+        System.out.print("Введіть варіант: ");
+
+        int option = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (option) {
+            case 1 -> {
+                System.out.print("Введіть текст для пошуку в заголовках: ");
+                String query = scanner.nextLine().toLowerCase();
+                List<Note> results = notes.stream()
+                        .filter(note -> note.getTitle().toLowerCase().contains(query))
+                        .toList();
+                displaySearchResults(results);
+            }
+            case 2 -> {
+                System.out.print("Введіть дату для пошуку (yyyy-MM-dd HH:mm): ");
+                String dateString = scanner.nextLine();
+                try {
+                    LocalDateTime searchDate = LocalDateTime.parse(dateString, formatter);
+                    List<Note> results = notes.stream()
+                            .filter(note -> note.getCreatedAt().toLocalDate().equals(searchDate.toLocalDate()))
+                            .toList();
+                    displaySearchResults(results);
+                } catch (Exception e) {
+                    System.out.println("Некоректний формат дати.");
+                }
+            }
+            default -> System.out.println("Некоректний вибір!");
+        }
+    }
+
+
+    private void displaySearchResults(List<Note> results) {
+        if (results.isEmpty()) {
+            System.out.println("Нотатки не знайдено.");
+        } else {
+            System.out.println("Знайдені нотатки:");
+            results.forEach(System.out::println);
+        }
     }
 }
 
